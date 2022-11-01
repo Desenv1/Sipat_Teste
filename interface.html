@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <base target="_top">
+   <script>
+     function update() {
+       atualizarSala();
+     }
+   </script>
+   <style>
+     .button {
+       background-color: blue;
+       color: white;
+       padding: 10px;
+       border: none;
+       border-radius: 5px;
+     }
+   </style>
+ </head>
+ <body>
+   <h1>Enter feedback</h1>
+   <p>
+     <input type="button" class="button" value="Submit feedback" onclick="update();">
+     <input type="button" class="button" value="Close" onclick="google.script.host.close();">
+   </p>
+   <hr>
+ </body>
+</html>

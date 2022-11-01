@@ -1,0 +1,3 @@
+# ignorando os arquivos de configuração
+*.json
+.vscode
