@@ -20,5 +20,3 @@ function createSala(salaCadastro) {
   autoFortmatacao(newSala);
 
 }
-
-

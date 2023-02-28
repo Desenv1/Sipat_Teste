@@ -20,19 +20,22 @@ function manageTrans(lista, command, patrimonios, lines){
     // mas sua variável é usada
     // ***Recomendação: chamar a função com patrimonios = 0
     if(command == 'get data'){
-        patrimonios = Array();
-        for(let i of lines){
-            patrimonios.push(lista.getRange(i,1,1,12).getValues()[0]);
-        }
-        return patrimonios;
+      patrimonios = Array();
+      for(let i of lines){
+          patrimonios.push(lista.getRange(i,1,1,12).getValues()[0]);
+      }
+      lock.releaseLock();
+      return patrimonios;
     }
 
 	if(command == 'get background'){
 		patrimonios = Array();
-        for(let i of lines){
-            patrimonios.push(lista.getRange(i,1,1,9).getBackground() == "#e6b8af"); // fundo igual a vermelho
-        }
-        return patrimonios;
+    for(let i of lines){
+        patrimonios.push(lista.getRange(i,1,1,9).getBackground() == "#e6b8af"); // fundo igual a vermelho
+    }
+    lock.releaseLock();
+    return patrimonios;
+        
 	}
     
     // para remover os patrimônios, lines é ignorado
@@ -114,9 +117,15 @@ function manageMestre(mestre,command, patrimonios){
  	} catch (e) {
  	Logger.log('Could not obtain lock after 10 seconds.');
  	}
-  var mestreLR = lastRowMestre();
+  if(command == 'sort'){
+	  // ordenando a planilha mestre
+	  var rangeTotal = mestre.getRange("A2:J");
+	  rangeTotal.sort(SORT_ORDER);
+    lock.releaseLock();
+    return;
+  }
+  var mestreLR = lastRow(mestre);
   if(command == 'update'){
-    var posMestre = Array();
 	  var newPats = Array();
   
 	  	//Loop que varre os patrimônios a serem transferidos.
@@ -143,10 +152,29 @@ function manageMestre(mestre,command, patrimonios){
       mestre.getRange(mestreLR+1,1,newPats.length,10).setValues(newPats);
     }
   }
-  if(command == 'sort'){
-	  // ordenando a planilha mestre
-	  var rangeTotal = mestre.getRange("A2:J");
-	  rangeTotal.sort(SORT_ORDER);
+  if(command == 'remove'){
+	  var linhas = Array();
+  
+	  	//Loop que varre os patrimônios a serem transferidos.
+	  var plaquetas = mestre.getRange(1,1,mestreLR,1).getValues(); //Coluna de plaquetas.
+	  plaquetas = transpose(plaquetas)[0];
+  
+	  // obtendo o numeros das linhas na planilha mestre de cada patrimonio
+	  // se não tiver, ele adiciona
+	  for(value of patrimonios){
+	  	let pos = plaquetas.indexOf(value[0]); //Procurar pela plaqueta na coluna.
+	  	if (pos != -1) {
+	  	  linhas.push(pos);
+	  	}
+	  }
+    linhas.reverse();
+    for (let k of linhas){
+      if(k<0){
+          continue;
+      }
+      mestre.deleteRows(k+1,1);
+    }
+
   }
   lock.releaseLock();
 }

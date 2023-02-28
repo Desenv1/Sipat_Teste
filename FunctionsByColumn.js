@@ -40,7 +40,7 @@ function getValuesByIndex(slave, indexColums, rows){
   var slaveLC = slave.getLastColumn();
   var patrimonios = slave.getRange(2,1,slaveLR-1,slaveLC).getValues();
   patrimonios = patrimonios.filter(function (value, it){
-    return rows.indexOf(it+1) != -1;
+    return rows.indexOf(it+2) != -1;
   });
   var patTrans  = transpose(patrimonios);
   patrimonios = patTrans.filter(function (value, it){

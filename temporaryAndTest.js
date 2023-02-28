@@ -135,3 +135,15 @@ function moverHistoricoTransferencia() {
   
 	var aux4 = historySheet.getRange(historyLR+1,1,transferidos.length,13).setValues(transferidos);
   }
+
+
+function autenticacao(responsible,user){
+  if (responsible != user &&
+      emailUser != 'desenv1@teiacoltec.org' &&
+      emailUser != 'desenv2@teiacoltec.org' &&
+      emailUser != 'wagnercoltec@teiacoltec.org') {
+      Browser.msgBox('Você não tem permissão para atualizar os patrimônios dessa sala na planilha mestre. ' +
+      'Por favor, execute a função em uma sala de sua responsabilidade.', Browser.Buttons.OK);
+      return 1;
+    } //Confere se a pessoa
+}
